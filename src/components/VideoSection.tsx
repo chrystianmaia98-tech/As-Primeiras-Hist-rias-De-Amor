@@ -1,7 +1,35 @@
-import { VIDEO_EMBED_URL } from '../types';
+import { useEffect, useRef } from 'react';
 import { Play } from 'lucide-react';
 
 export function VideoSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    // Clear and inject the exact LiteVideo web component requested
+    containerRef.current.innerHTML = `
+      <lt-v2 
+        v="1471411f-6ded-4657-889b-3eef508d8d5b" 
+        ar="9:16" 
+        cc="141414" 
+        cs="g" 
+        ic="ff0000" 
+        ib="ff0000" 
+        pc="ff0000" 
+        pi="square" 
+        ct="[[]]"
+        style="width: 100%; aspect-ratio: 9/16; display: block; border-radius: 12px; overflow: hidden;"
+      ></lt-v2>
+    `;
+
+    // Ensure LiteVideo script is attached and executes
+    const script = document.createElement('script');
+    script.src = 'https://app.litevideo.net/p.js';
+    script.async = true;
+    containerRef.current.appendChild(script);
+  }, []);
+
   return (
     <section id="video-preview-section" className="w-full max-w-md mx-auto my-6 px-4">
       <div className="relative rounded-2xl p-2 bg-gradient-to-b from-neutral-800/80 via-neutral-900 to-neutral-950 border border-neutral-800 shadow-2xl shadow-rose-950/20">
@@ -17,15 +45,15 @@ export function VideoSection() {
         </div>
 
         {/* The video container */}
-        <div className="w-full overflow-hidden rounded-xl bg-black shadow-inner">
-          <iframe
-            id="dorama-preview-video"
-            src={VIDEO_EMBED_URL}
-            style={{ width: '100%', aspectRatio: '9/16', border: 0, borderRadius: '12px' }}
-            allowFullScreen
-            loading="lazy"
-            title="Prévia do filme As Primeiras Histórias de Amor"
-          />
+        <div 
+          ref={containerRef}
+          id="dorama-preview-video-container"
+          className="w-full overflow-hidden rounded-xl bg-black shadow-inner min-h-[400px] flex items-center justify-center"
+        >
+          {/* Fallback while script mounts */}
+          <div className="text-neutral-500 text-xs animate-pulse p-8 text-center">
+            Carregando prévia do filme...
+          </div>
         </div>
 
         <p className="text-center text-xs text-neutral-400 mt-2.5 pb-1">
