@@ -1,0 +1,8 @@
+{
+  "name": "Remix As Primeiras Histórias de Amor - Oferta",
+  "description": "Página de oferta especial para o filme em alta As Primeiras Histórias de Amor por apenas R$ 10,00 com acesso imediato.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
